@@ -1,0 +1,16 @@
+http:
+ host: "0.0.0.0"
+ port: "8081"
+ path: "/api/*"
+ 
+fetchRoutes:
+ http:
+  host:  "qvj3e.mocklab.io"
+  port: "80" 
+  path: "/fetchRoutes"
+  
+fetchSchedules:
+ http: 
+  host:  "qvj3e.mocklab.io"
+  port: "80"
+  path: "/fetchSchedules" 

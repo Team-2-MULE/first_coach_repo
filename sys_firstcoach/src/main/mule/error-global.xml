@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="error-globalError_Handler" doc:id="5f258d31-1572-4dbd-9f45-441cf3ba0ee1" >
+		<on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="19a9cead-2efe-43c8-b75c-4a6a5e0a387f">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="b4d844f9-9d62-43a2-8eeb-7f7a5d80143e" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="ff5afe3a-bfc8-4509-b9f5-7293d417a3b0">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="1ee19fdc-64ec-4081-bf45-fb8826523df6" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="11358e3a-fe32-4d59-8c30-ace66145ec18">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="dcf2346b-595a-47ae-9e23-589c846793b7" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="a32db057-1c0e-4df2-ba9f-47d12e0c67b3">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="900d6dc7-01f8-4c66-b7f3-b5fa7d3270fb" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="a691c839-cc6e-4132-b8e4-8b27053b073d">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="a446b558-af74-4603-a8b6-ba8cc25e69cc" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="68a74de4-fa53-47aa-bbdc-b608ff42406e">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="c2685264-f520-4989-bfdd-67fa6640e22b" name="error-globalSub_Flow"/>
+            
+</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="52b05f28-c718-4300-af40-76e74a37e925" type="HTTP:SECURITY">
+			<set-variable value="#[401]" doc:name="Set the HTTP status-401" doc:id="4a74b4a0-960a-448c-9e46-2156a9a59f75" variableName="httpStatus"/>
+			<flow-ref doc:name="Flow Reference" doc:id="61c184b0-16c6-49bc-a1e0-a1560ed57c52" name="error-globalSub_Flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="36b52fcc-3293-4f4e-beed-8b17cf1d1b25" type="HTTP:BAD_REQUEST">
+			<set-variable value="400" doc:name="Set the HTTP Status 400" doc:id="072a5390-6514-41a0-8fc9-5e8382ff54d2" variableName="httpStatus"/>
+			<flow-ref doc:name="Flow Reference" doc:id="55f3262d-dc1b-4f5c-90b8-368fe1d04c23" name="error-globalSub_Flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="65e1f124-6bce-4279-b6ed-2a256beaab1a" type="HTTP:FORBIDDEN">
+			<set-variable value="#[403]" doc:name="Set the HTTP Status 403" doc:id="288ae509-6399-4389-9ead-5d0da47a8e5c" variableName="httpStatus"/>
+			<flow-ref doc:name="Flow Reference" doc:id="3005b721-adf7-442a-99e3-5528c6268276" name="error-globalSub_Flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="72d39f04-0e7c-4857-862c-80986f7f0f0b" type="HTTP:NOT_FOUND">
+			<set-variable value="#[404]" doc:name="Set the HTTP Status 404" doc:id="f3312362-69f5-47bc-b9fe-06d9050d7e34" variableName="httpStatus"/>
+			<flow-ref doc:name="Flow Reference" doc:id="0e02745d-4205-476e-b0da-6676a5962483" name="error-globalSub_Flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5e68a7ad-dc30-4a97-ac49-f0799ffd97a6" type="ANY">
+			<set-variable value="#[500]" doc:name="Set the HTTP Status 500" doc:id="654c5a91-0a83-4beb-8d41-25b45f989397" variableName="httpStatus"/>
+			<flow-ref doc:name="Flow Reference" doc:id="dfd6fe06-98d7-44be-b253-e12623633eb4" name="error-globalSub_Flow"/>
+		</on-error-propagate>
+	</error-handler>
+	<sub-flow name="error-globalSub_Flow" doc:id="0560764b-ef0a-4fae-a236-6a2fc3513f0f" >
+		<ee:transform doc:name="Transform Message" doc:id="892d55ff-bc40-45e7-b84d-1bee0945fbdc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{  "error-code":vars.httpStatus,
+	"message":error.description,
+	"timestamp":now(),
+	"error-type":error.errorType
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

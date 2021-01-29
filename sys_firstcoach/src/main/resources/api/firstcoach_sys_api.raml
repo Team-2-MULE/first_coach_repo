@@ -1,0 +1,69 @@
+#%RAML 1.0
+title: FirstCoach_sys_api
+version: 1.0
+description: FirstCoach retrive routes and schedules
+mediaType: 
+- application/json
+protocols:
+  - HTTP
+
+baseUri: www.firstBooking.com
+
+securitySchemes:
+  basicauthentication:
+    type: Basic Authentication
+    describedBy:
+      queryParameters:
+        userName: 
+          type: string
+        password:
+          type: string
+
+securedBy:
+  - basicauthentication
+
+types: 
+  schedules: !include Types/scheduleDatatype.raml
+  routes: !include Types/routesDatatype.raml
+
+traits:
+  errortrait: !include Traits/ErrorResponse.raml
+  queryParameters: !include Traits/query.raml
+
+
+/{transportType}/{transportCompany}/schedules:
+  uriParameters:
+    transportType:
+      type: string
+      enum: [land,sea]
+    transportCompany:
+       type: string
+  get: 
+    is: [errortrait,queryParameters]
+    description: 
+    displayName: 
+    responses:
+      200:
+        body:
+          application/json:
+            #type: object
+            example: !include Examples/ExampleSchedules.raml
+
+/{transportType}/{transportCompany}/routes:
+  uriParameters:
+    transportType:
+      type: string
+      enum: [sea,land]
+    transportCompany: 
+      type: string
+      enum: [firstCoach]
+  get: 
+    is: [errortrait]
+    description:
+    displayName: 
+    responses:
+      200:
+        body:
+          application/json:
+            #type: routes
+            example: !include Examples/ExampleRoutes.raml

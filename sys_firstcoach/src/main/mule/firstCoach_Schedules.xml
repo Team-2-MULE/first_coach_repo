@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="46606c26-664d-4083-bf59-cf789f4ab8f9">
+		<http:request-connection host="${secure::fetchSchedules.http.host}" port="${secure::fetchSchedules.http.port}" >
+		</http:request-connection>
+	</http:request-config>
+	<flow name="firstCoach_SchedulesFlow" doc:id="3ba56fe9-f3db-462e-9f46-f2a9f38d31d4" >
+		<logger level="INFO" doc:name="Logger" doc:id="e93e16d6-b2c9-4390-8222-5d03e45899e8" message="starting"/>
+		<ee:transform doc:name="Transform Message" doc:id="060634a9-1fac-4674-a7de-1c919b384e45" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+	{
+ "originLocation": {
+ "locationCode": attributes.queryParams.departureLocationCode
+ },
+ "destinationLocation": {
+ "locationCode": attributes.queryParams.destinationLocationCode
+ }
+ }
+	
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="86d6a78f-52f1-46dd-ae3d-e0b29ba551d2" config-ref="HTTP_Request_configuration1" path="${secure::fetchSchedules.http.path}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="72beb12a-a157-421a-8b68-06b715104dcb" message="External System Output#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="c046dc50-fe30-4879-a017-cd02d4e71fd0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+departureSchedules: payload.schedules map (v,i) -> {
+	availableSeats: v.availableSeats,
+	departureDatetime: v.departureDateTime,
+	travelRoute: {
+		destinationLocation: {
+			locationCode: v.fromLocation},
+originLocation: {
+			locationCode: v.toLocation}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

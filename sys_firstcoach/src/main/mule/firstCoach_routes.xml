@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="779e9468-7cdf-440c-aa21-3450938ca299">
+		<http:request-connection host="${secure::fetchRoutes.http.host}" port="${secure::fetchRoutes.http.port}" >
+		</http:request-connection>
+	</http:request-config>
+	<flow name="firstCoach_routesFlow1" doc:id="2e8260f0-14f7-47f2-84dc-ab77056abaec" >
+		<logger level="INFO" doc:name="Logger" doc:id="f1340725-d43a-439b-9262-21ca0424479d" />
+		<http:request method="GET" doc:name="Request" doc:id="a1f32056-a8d3-4d11-af07-0d94a2ed8cd6" config-ref="HTTP_Request_configuration" path="${secure::fetchRoutes.http.path}"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9e075d36-524a-498a-993f-a30dad2af40e" message="external system output#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="cb7747e7-5f50-47e5-a87c-cbfc321758c6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map(v,i) ->
+{
+originLocation:{
+locationCode: v.departureLocationCode
+},
+destinationLocation: {
+ locationCode: v.arrivalLocationCode
+ }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
